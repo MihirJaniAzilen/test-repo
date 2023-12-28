@@ -12,11 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2  # Checkout the repository to the runner
 
+      - name: Check if files exist in folder1
+        run: |
+          if [ "$(ls -A folder1)" ]; then
+            echo "Files exist in folder1"
+          else
+            echo "No files found in folder1. Skipping copy operation."
+            exit 0  # Exit with success code if no files found
+          fi
+
       - name: Copy and Push Changes
         run: |
           cd folder1  # Navigate to Folder1
           cp -R . ../folder2/  # Copy contents to Folder2
-
           cd ../folder2  # Navigate to Folder2
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
