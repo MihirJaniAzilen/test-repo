@@ -1,0 +1,25 @@
+name: Copy Files Every 5 Minutes again 
+
+on:
+  schedule:
+    - cron: '*/6 * * * *'  # Executes the workflow every 6 minutes
+
+jobs:
+  copy-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Checkout the repository to the runner
+
+      - name: Copy and Push Changes
+        run: |
+          cd folder1  # Navigate to Folder1
+          cp -R . ../folder2/  # Copy contents to Folder2
+
+          cd ../folder2  # Navigate to Folder2
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add .
+          git commit -m "Auto copy files"
+          git push origin main  # Push changes to the main branch
